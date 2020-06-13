@@ -1,6 +1,6 @@
 {
   "name": "covid-now",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "",
   "main": "index.js",
   "keywords": [
@@ -9,8 +9,18 @@
     "covid",
     "tool"
   ],
-  "author": "https://github.com/umairx97/",
+  "repository": {
+    "url": "http://github.com/umairx97/covid-now"
+  },
   "license": "MIT",
+  "author": "Umair Ahmed Bajwa",
+  "contributors": [
+    {
+      "name": "Umair Ahmed Bajwa",
+      "email": "umairahmedbajwa97@gmail.com",
+      "url": "https://github.com/umairx97/"
+    }
+  ],
   "dependencies": {
     "chalk": "^4.1.0",
     "request": "^2.88.2",
