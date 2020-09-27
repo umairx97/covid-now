@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const yargs = require('yargs')
 const { promisify } = require('util')
 const chalk = require('chalk')
@@ -17,30 +16,28 @@ var argv = yargs
   .argv
 
 const getCovidData = async (countryCode) => {
-  try {
-    const opts = {
-      url: `${BASE_URL}/stats/v1/${countryCode}/`,
-      headers: {
-        'x-rapidapi-host': 'coronavirus-smartable.p.rapidapi.com',
-        'x-rapidapi-key': SUBSCRIPTION_KEY,
-        useQueryString: true
-      }
+  const opts = {
+    url: `${BASE_URL}/stats/v1/${countryCode}/`,
+    headers: {
+      'x-rapidapi-host': 'coronavirus-smartable.p.rapidapi.com',
+      'x-rapidapi-key': SUBSCRIPTION_KEY,
+      useQueryString: true
     }
-    const data = await request(opts)
-    return JSON.parse(data.body)
-  } catch (err) {
-    throw new Error(err.message)
   }
+  const { body } = await request(opts)
+  return JSON.parse(body)
 }
 
-const printStats = (stats) => {
+const printStats = (data) => {
+  const { stats, location: { countryOrRegion } } = data
   const { totalConfirmedCases, newlyConfirmedCases, newDeaths, totalRecoveredCases } = stats
+  console.log(`Country Or Region: ${chalk.yellowBright(countryOrRegion)}`)
   console.log(`Total Confirmed Cases: ${chalk.yellowBright(totalConfirmedCases)}`)
   console.log(`New Confirmed Cases: ${chalk.redBright(newlyConfirmedCases)}`)
   console.log(`New Deaths: ${chalk.redBright(newDeaths)}`)
   console.log(`Total Recovered: ${chalk.blueBright(totalRecoveredCases)}`)
 }
 
-getCovidData(argv.c || argv.country)
-  .then(({ stats }) => printStats(stats))
+getCovidData(argv.country)
+  .then(printStats)
   .catch(err => console.log(err.message))
